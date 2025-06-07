@@ -1,5 +1,10 @@
-import 'package:tetris_cli/tetris_cli.dart' as tetris_cli;
+import 'package:tetris_cli/tetris_cli.dart';
+import 'package:tetris_cli/ansi_cli_helper.dart' as ansi;
 
 void main(List<String> arguments) {
-  print('Hello world: ${tetris_cli.calculate()}!');
+  ansi.reset();
+  ansi.hideCursor();
+
+  initGame();
+  start();
 }
