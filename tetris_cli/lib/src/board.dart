@@ -28,23 +28,22 @@ bool get isGameOver => _isGameOver;
 // Функция отрисовки основной доски
 void drawBoard() {
   ansi.gotoxy(0, 0); // устанавливаем курсор в начало
-  for (int i = 0; i < heightBoard - 1; i++) {
+  for (int i = 0; i < heightBoard - 2; i++) {
     for (int j = 0; j < widthBoard - 1; j++) {
       switch (mainBoard[i][j]) {
         case posFree:
-          stdout.write(' '); // пустое место
+          stdout.write('⬛');
         case posFilled:
-          stdout.write('O'); // заполненное место и фигура
+          stdout.write('⬜');
         case posBoarder:
-          // устанавливаем красный цвет текста
-          ansi.setTextColor(ansi.redTColor); 
-          stdout.write('#'); // граница доски
-          // возвращаем белый цвет 
-          ansi.setTextColor(ansi.whiteTColor); 
+          stdout.write('🟥');
       }
     }
     stdout.write('\n');
   }
+  // отрисовываем нижнюю границу
+  stdout.write('🟥');
+  stdout.write('${'🟥' * 8}\n');
 }
 
 // Функция очистки заполненных строк
