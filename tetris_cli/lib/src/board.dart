@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'blocks.dart';
-import '../ansi_cli_helper.dart' as ansi;
+import 'blocks/blocks.dart';
+import 'ansi_cli_helper/ansi_cli_helper.dart' as ansi;
 
 const int heightBoard = 20; // высота игровой доски
 const int widthBoard = 10; // ширина игровой доски
