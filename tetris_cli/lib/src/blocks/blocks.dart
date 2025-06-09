@@ -1,245 +1,99 @@
 import 'dart:math';
 
-// Размеры блоков
-const int horizontalBlockSize = 4; // по горизонтали
-const int verticalBlockSize = 4; // по вертикали
- 
-var _defBlocks = [
-// Квадрат
-  [
-    [
-      [0, 0, 0, 0],
-      [0, 1, 1, 0],
-      [0, 1, 1, 0],
-      [0, 0, 0, 0]
-    ],
-    [
-      [0, 0, 0, 0],
-      [0, 1, 1, 0],
-      [0, 1, 1, 0],
-      [0, 0, 0, 0]
-    ],
-    [
-      [0, 0, 0, 0],
-      [0, 1, 1, 0],
-      [0, 1, 1, 0],
-      [0, 0, 0, 0]
-    ],
-    [
-      [0, 0, 0, 0],
-      [0, 1, 1, 0],
-      [0, 1, 1, 0],
-      [0, 0, 0, 0]
-    ]
-  ],
+import 'block.dart';
+export 'block.dart';
 
-// I
-  [
-    [
-      [0, 0, 0, 0],
-      [1, 1, 1, 1],
-      [0, 0, 0, 0],
-      [0, 0, 0, 0]
-    ],
-    [
-      [0, 1, 0, 0],
-      [0, 1, 0, 0],
-      [0, 1, 0, 0],
-      [0, 1, 0, 0]
-    ],
-    [
-      [0, 0, 0, 0],
-      [1, 1, 1, 1],
-      [0, 0, 0, 0],
-      [0, 0, 0, 0]
-    ],
-    [
-      [0, 1, 0, 0],
-      [0, 1, 0, 0],
-      [0, 1, 0, 0],
-      [0, 1, 0, 0],
-    ]
-  ],
-// L
-  [
-    [
-      [0, 1, 0, 0],
-      [0, 1, 0, 0],
-      [0, 1, 1, 0],
-      [0, 0, 0, 0]
-    ],
-    [
-      [0, 0, 0, 0],
-      [1, 1, 1, 0],
-      [1, 0, 0, 0],
-      [0, 0, 0, 0]
-    ],
-    [
-      [1, 1, 0, 0],
-      [0, 1, 0, 0],
-      [0, 1, 0, 0],
-      [0, 0, 0, 0]
-    ],
-    [
-      [0, 0, 1, 0],
-      [1, 1, 1, 0],
-      [0, 0, 0, 0],
-      [0, 0, 0, 0]
-    ]
-  ],
-// Зеркальное L
-  [
-    [
-      [0, 1, 0, 0],
-      [0, 1, 0, 0],
-      [1, 1, 0, 0],
-      [0, 0, 0, 0]
-    ],
-    [
-      [1, 0, 0, 0],
-      [1, 1, 1, 0],
-      [0, 0, 0, 0],
-      [0, 0, 0, 0]
-    ],
-    [
-      [0, 1, 1, 0],
-      [0, 1, 0, 0],
-      [0, 1, 0, 0],
-      [0, 0, 0, 0]
-    ],
-    [
-      [0, 0, 0, 0],
-      [1, 1, 1, 0],
-      [0, 0, 1, 0],
-      [0, 0, 0, 0]
-    ]
-  ],
-// N
-  [
-    [
-      [0, 0, 1, 0],
-      [0, 1, 1, 0],
-      [0, 1, 0, 0],
-      [0, 0, 0, 0]
-    ],
-    [
-      [0, 0, 0, 0],
-      [1, 1, 0, 0],
-      [0, 1, 1, 0],
-      [0, 0, 0, 0]
-    ],
-    [
-      [0, 1, 0, 0],
-      [1, 1, 0, 0],
-      [1, 0, 0, 0],
-      [0, 0, 0, 0]
-    ],
-    [
-      [1, 1, 0, 0],
-      [0, 1, 1, 0],
-      [0, 0, 0, 0],
-      [0, 0, 0, 0]
-    ]
-  ],
-// Зеркальное N
-  [
-    [
-      [0, 1, 0, 0],
-      [0, 1, 1, 0],
-      [0, 0, 1, 0],
-      [0, 0, 0, 0]
-    ],
-    [
-      [0, 0, 0, 0],
-      [0, 1, 1, 0],
-      [1, 1, 0, 0],
-      [0, 0, 0, 0]
-    ],
-    [
-      [1, 0, 0, 0],
-      [1, 1, 0, 0],
-      [0, 1, 0, 0],
-      [0, 0, 0, 0]
-    ],
-    [
-      [0, 1, 1, 0],
-      [1, 1, 0, 0],
-      [0, 0, 0, 0],
-      [0, 0, 0, 0]
-    ]
-  ],
-// T
-  [
-    [
-      [0, 1, 0, 0],
-      [0, 1, 1, 0],
-      [0, 1, 0, 0],
-      [0, 0, 0, 0]
-    ],
-    [
-      [0, 0, 0, 0],
-      [1, 1, 1, 0],
-      [0, 1, 0, 0],
-      [0, 0, 0, 0]
-    ],
-    [
-      [0, 1, 0, 0],
-      [1, 1, 0, 0],
-      [0, 1, 0, 0],
-      [0, 0, 0, 0]
-    ],
-    [
-      [0, 1, 0, 0],
-      [1, 1, 1, 0],
-      [0, 0, 0, 0],
-      [0, 0, 0, 0]
-    ]
-  ]
+final class IBlock extends Block {
+  IBlock()
+      : super([
+          [0, 0, 0, 0],
+          [1, 1, 1, 1],
+          [0, 0, 0, 0],
+          [0, 0, 0, 0],
+        ]);
+}
+
+final class OBlock extends Block {
+  OBlock()
+      : super([
+          [0, 0, 0, 0],
+          [0, 1, 1, 0],
+          [0, 1, 1, 0],
+          [0, 0, 0, 0],
+        ]);
+}
+
+final class TBlock extends Block {
+  TBlock()
+      : super([
+          [0, 0, 0, 0],
+          [1, 1, 1, 0],
+          [0, 1, 0, 0],
+          [0, 0, 0, 0],
+        ]);
+}
+
+final class LBlock extends Block {
+  LBlock()
+      : super([
+          [0, 0, 0, 0],
+          [1, 1, 1, 0],
+          [1, 0, 0, 0],
+          [0, 0, 0, 0],
+        ]);
+}
+
+final class JBlock extends Block {
+  JBlock()
+      : super([
+          [0, 0, 0, 0],
+          [1, 1, 1, 0],
+          [0, 0, 1, 0],
+          [0, 0, 0, 0],
+        ]);
+}
+
+final class SBlock extends Block {
+  SBlock()
+      : super([
+          [0, 0, 0, 0],
+          [0, 1, 1, 0],
+          [1, 1, 0, 0],
+          [0, 0, 0, 0],
+        ]);
+}
+
+final class ZBlock extends Block {
+  ZBlock()
+      : super([
+          [0, 0, 0, 0],
+          [1, 1, 0, 0],
+          [0, 1, 1, 0],
+          [0, 0, 0, 0],
+        ]);
+}
+
+Block getNewRandomBlock() {
+  return _defBlocks[Random().nextInt(_defBlocks.length)].copyWith();
+}
+
+final _defBlocks = [
+  OBlock(),
+  IBlock(),
+  IBlock()..rotate(),
+  LBlock(),
+  LBlock()..rotate(),
+  JBlock(),
+  JBlock()..rotate(),
+  TBlock(),
+  TBlock()..rotate(),
+  TBlock()..rotate()..rotate(),
+  TBlock()..rotate()..rotate()..rotate(),
+  SBlock(),
+  SBlock()..rotate(),
+  SBlock()..rotate()..rotate(),
+  SBlock()..rotate()..rotate()..rotate(),  ZBlock(),
+  ZBlock()..rotate(),
+  ZBlock()..rotate()..rotate(),
+  ZBlock()..rotate()..rotate()..rotate(),
 ];
-
-int _getRandom(int min, int max) {
-  return Random().nextInt(max - min + 1) + min;
-}
-
-/******Тип блока*********/
-typedef BlockType = int;
-// 0 - square
-// 1 - stick
-// 2 - L
-// 3 - mirror L
-// 4 - N
-// 5 - mirror N
-// 6 - T
-
-const List<BlockType> _blockTypes = [0, 1, 2, 3, 4, 5, 6];
-BlockType _getRandomBlockType() => _blockTypes[_getRandom(
-      0,
-      _blockTypes.length - 1,
-    )];
-
-/******Тип поворота блока*******/
-typedef BlockRotation = int;
-// 0 - zero
-// 1 - one
-// 2 - two
-// 3 - three
-
-const List<BlockRotation> _blockRotations = [0, 1, 2, 3];
-BlockRotation _getRandomRotation() => _blockRotations[_getRandom(
-      0,
-      _blockRotations.length - 1,
-    )];
-
-List<List<int>> getNewBlock() {
-  var blockType = _getRandomBlockType();
-  var rotation = _getRandomRotation();
-
-  List<List<int>> tmp = List.generate(4, (_) => List.filled(4, 0));
-  var defBlock = _defBlocks[blockType][rotation];
-  for (int i = 0; i < 4; i++) {
-    for (int j = 0; j < 4; j++) {
-      tmp[i][j] = defBlock[i][j];
-    }
-  }
-  return tmp;
-}
